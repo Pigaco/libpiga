@@ -1,11 +1,17 @@
 #ifndef PIGA_HOST_H_INCLUDED
 #define PIGA_HOST_H_INCLUDED
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    
 #include <piga/status.h>
 #include <piga/host_config.h>
 #include <piga/player.h>
 #include <piga/event_text_input_queue.h>
-
+#include <piga/shared_memory.h>
+    
 typedef struct {
     piga_host_config *config;
     int shared_memory_id;
@@ -30,7 +36,7 @@ typedef struct {
      * **Queues**
      * Text Event Queue | piga_event_text_input_queue | The queue for text inputs.
      */
-    char* shared_memory_start_segment;
+    piga_shared_memory shared_memory;
 } piga_host;
 
 piga_host* piga_host_create();
@@ -45,5 +51,9 @@ piga_event_text_input_queue* piga_host_get_event_text_input_queue(piga_host *hos
 void piga_host_set_player_input(piga_host* host, char player_id, char input_id, int value);
 
 void piga_host_players_reset_inputs(piga_host *host);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,4 +1,4 @@
-#include <piga/player_inputs.h>
+#include <piga/internal/piga_player_inputs_struct.h>
 
 void piga_player_inputs_reset(piga_player_inputs* inputs)
 {
@@ -49,11 +49,11 @@ void piga_player_inputs_set(piga_player_inputs* inputs, char id, int value)
 {
     inputs->value[id] = value;
 }
-int piga_player_direct_output_get(piga_player_inputs* inputs, char id)
+int piga_player_inputs_get_direct_output(piga_player_inputs* inputs, char id)
 {
     return inputs->direct_output[id];
 }
-void piga_player_direct_output_set(piga_player_inputs* inputs, char id, int value)
+void piga_player_inputs_set_direct_output(piga_player_inputs* inputs, char id, int value)
 {
     inputs->direct_output[id] = value;
 }

@@ -1,4 +1,6 @@
 #include <piga/status.h>
+#include <errno.h>
+#include <string.h>
 
 const char* piga_status_what(piga_status status)
 {
@@ -21,6 +23,13 @@ const char* piga_status_what(piga_status status)
         case PIGA_ERROR_INVALID_PLAYER_ID:
             return "PIGA_ERROR_INVALID_PLAYER_ID: The player id was invalid because it "
             "was either smaller than 0 or greater than the player count defined in the host config.";
+        case PIGA_ERROR_SHMSIZE_INVALID:
+            return "PIGA_ERROR_SHMSIZE_INVALID: The shared memory size was invalid.";
     }
     return "Error not found.";
+}
+
+const char* piga_errno_what()
+{
+    return strerror(errno);
 }

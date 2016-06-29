@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <piga/event_text_input.h>
+#include <piga/internal/piga_event_text_input_struct.h>
 
 piga_event_text_input* piga_event_text_input_create()
 {
@@ -27,9 +27,13 @@ void piga_event_text_input_set_player_id(piga_event_text_input* ev, char player_
 {
     ev->player_id = player_id;
 }
-const atomic_char* piga_event_text_input_get_input(piga_event_text_input* ev)
+char* piga_event_text_input_get_input(piga_event_text_input* ev)
 {
-    return &ev->input[0];
+    int length = piga_event_text_input_get_input_length(ev);
+    char *array = (char*) malloc(sizeof(char) * length);
+    for(int i = 0; i < length; ++i)
+        array[i] = ev->input[i];
+    return array;
 }
 short piga_event_text_input_get_input_length(piga_event_text_input* ev)
 {

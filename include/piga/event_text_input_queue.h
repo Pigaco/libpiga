@@ -1,20 +1,18 @@
 #ifndef PIGA_EVENT_TEXT_INPUT_QUEUE_H_INCLUDED
 #define PIGA_EVENT_TEXT_INPUT_QUEUE_H_INCLUDED
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    
 #define PIGA_EVENT_TEXT_INPUT_QUEUE_SIZE 10
-
-#include <stdatomic.h>
-
+    
 #include <piga/status.h>
 #include <piga/event_text_input.h>
 
-typedef struct
-{
-    piga_event_text_input elements[PIGA_EVENT_TEXT_INPUT_QUEUE_SIZE];
-    atomic_char front;
-    atomic_char rear;
-} piga_event_text_input_queue;
-
+typedef struct piga_event_text_input_queue piga_event_text_input_queue;
+    
 piga_event_text_input_queue* piga_event_text_input_queue_create();
 void piga_event_text_input_queue_free(piga_event_text_input_queue *queue);
 void piga_event_text_input_queue_init(char *memory);
@@ -37,5 +35,9 @@ piga_status piga_event_text_input_queue_poll(piga_event_text_input_queue *queue,
  * @brief Returns 1 if the queue is empty, 0 otherwise.
  */
 int piga_event_text_input_queue_is_empty(piga_event_text_input_queue *queue);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,5 +1,7 @@
 #include <stdlib.h>
-#include <piga/event_text_input_queue.h>
+#include <stdatomic.h>
+
+#include <piga/internal/piga_event_text_input_queue_struct.h>
 
 piga_event_text_input_queue* piga_event_text_input_queue_create()
 {

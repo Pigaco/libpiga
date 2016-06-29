@@ -1,6 +1,11 @@
 #ifndef PIGA_CLIENT_CONFIG_H_INCLUDED
 #define PIGA_CLIENT_CONFIG_H_INCLUDED
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct
 {
     int shared_memory_key;
@@ -15,5 +20,10 @@ void piga_client_config_set_shared_memory_key(piga_client_config *config, int ke
 
 char piga_client_config_get_player_count(piga_client_config *config);
 void piga_client_config_set_player_count(piga_client_config *config, char player_count);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif

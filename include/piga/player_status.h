@@ -1,7 +1,10 @@
 #ifndef PIGA_PLAYER_STATUS_H_INCLUDED
 #define PIGA_PLAYER_STATUS_H_INCLUDED
 
-#include <stdatomic.h>
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 typedef enum 
 {
@@ -11,8 +14,12 @@ typedef enum
     PIGA_PLAYER_STATUS_TYPING = 3,
 } piga_player_status;
 
-typedef atomic_char piga_player_status_char;
+typedef char piga_player_status_char;
 
 const char* piga_player_status_name(piga_player_status status);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

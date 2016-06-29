@@ -1,6 +1,11 @@
 #ifndef PIGA_ERROR_H_INCLUDED
 #define PIGA_ERROR_H_INCLUDED
-
+    
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    
 typedef enum 
 {
     PIGA_STATUS_OK = 0,
@@ -11,8 +16,15 @@ typedef enum
     PIGA_ERROR_EVENT_TEXT_INPUT_TEXT_TOO_LONG = -5,
     PIGA_ERROR_EMPTY_QUEUE = -6,
     PIGA_ERROR_INVALID_PLAYER_ID = -7,
+    PIGA_ERROR_SHMSIZE_INVALID = -8,
 } piga_status;
 
 const char* piga_status_what(piga_status status);
+
+const char* piga_errno_what();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

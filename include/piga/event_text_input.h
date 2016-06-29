@@ -1,18 +1,16 @@
 #ifndef PIGA_EVENT_TEXT_INPUT_H_INCLUDED
 #define PIGA_EVENT_TEXT_INPUT_H_INCLUDED
 
-#include <stdatomic.h>
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    
 #include <piga/status.h>
 
 #define PIGA_EVENT_TEXT_INPUT_TEXT_SIZE 16
 
-typedef struct 
-{
-    atomic_char player_id; 
-    atomic_char input[PIGA_EVENT_TEXT_INPUT_TEXT_SIZE];
-    atomic_long seconds;
-    atomic_long nanoseconds;
-} piga_event_text_input;
+typedef struct piga_event_text_input piga_event_text_input;
 
 piga_event_text_input* piga_event_text_input_create();
 void piga_event_text_input_free(piga_event_text_input *ev);
@@ -25,9 +23,11 @@ void piga_event_text_input_set_player_id(piga_event_text_input* ev, char player_
  * 
  * \0 is stored with the string, so the maximum effective length possible for one
  * event is PIGA_EVENT_TEXT_INPUT_TEXT_SIZE - 1.
+ * 
+ * The char* array has to be free()d after use.
  */
 piga_status piga_event_text_input_set_input(piga_event_text_input *ev, const char* input, short length);
-const atomic_char* piga_event_text_input_get_input(piga_event_text_input *ev);
+char* piga_event_text_input_get_input(piga_event_text_input *ev);
 /**
  * @brief Returns the length of the internal input string (including \0 ).
  * 
@@ -43,5 +43,9 @@ long piga_event_text_input_get_nanoseconds(piga_event_text_input *ev);
 void piga_event_text_input_set_nanoseconds(piga_event_text_input *ev, long nanoseconds);
 
 void piga_event_text_input_copy(piga_event_text_input *src, piga_event_text_input *tgt);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

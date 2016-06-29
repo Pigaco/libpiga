@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <piga/player.h>
+#include <piga/internal/piga_player_struct.h>
 
 piga_player* piga_player_create()
 {
@@ -18,9 +18,14 @@ void piga_player_free(piga_player* player)
 {
     free(player);
 }
-const char* piga_player_get_name(piga_player* player)
+char* piga_player_get_name(piga_player* player)
 {
-    return player->name;
+    size_t length = piga_player_get_name_length(player);
+    char *name = malloc(length + 1);
+    for(size_t i = 0; i < length; ++i)
+        name[i] = player->name[i];
+    name[length] = '\0';
+    return name;
 }
 short int piga_player_get_name_length(piga_player* player)
 {
@@ -31,9 +36,10 @@ short int piga_player_get_name_length(piga_player* player)
 }
 void piga_player_set_name(piga_player* player, const char* name, short int length)
 {
-    if(length >= PIGA_PLAYER_NAME_LENGTH)
+    if(length < PIGA_PLAYER_NAME_LENGTH)
         for(int i = 0; i < length; ++i)
             player->name[i] = name[i];
+    player->name[length] = '\0';
 }
 piga_player_role piga_player_get_role(piga_player* player)
 {
@@ -62,6 +68,14 @@ int piga_player_get_input(piga_player* player, char input_id)
 void piga_player_set_input(piga_player* player, char input_id, int value)
 {
     piga_player_inputs_set(&player->inputs, input_id, value);
+}
+int piga_player_get_direct_output(piga_player* player, char output_id)
+{
+    return piga_player_inputs_get_direct_output(&player->inputs, output_id);
+}
+void piga_player_set_direct_output(piga_player* player, char output_id, int value)
+{
+    piga_player_inputs_set_direct_output(&player->inputs, output_id, value);
 }
 
 
