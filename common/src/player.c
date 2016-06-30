@@ -61,6 +61,24 @@ piga_player_inputs* piga_player_get_inputs(piga_player* player)
 {
     return &player->inputs;
 }
+unsigned int piga_player_get_keyboard_requested(piga_player* player)
+{
+    return player->keyboard_requested;
+}
+void piga_player_set_keyboard_requested(piga_player* player, unsigned int value)
+{
+    player->keyboard_requested = value;
+}
+unsigned int piga_player_get_keyboard_open(piga_player* player)
+{
+    return player->keyboard_open;
+}
+void piga_player_set_keyboard_open(piga_player* player, unsigned int value)
+{
+    player->keyboard_open = value;
+}
+
+
 int piga_player_get_input(piga_player* player, char input_id)
 {
     return piga_player_inputs_get(&player->inputs, input_id);

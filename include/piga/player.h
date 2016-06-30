@@ -37,6 +37,12 @@ void piga_player_set_status(piga_player *player, piga_player_status status);
 
 piga_player_inputs* piga_player_get_inputs(piga_player *player);
 
+unsigned int piga_player_get_keyboard_requested(piga_player *player);
+void piga_player_set_keyboard_requested(piga_player *player, unsigned int value);
+
+unsigned int piga_player_get_keyboard_open(piga_player *player);
+void piga_player_set_keyboard_open(piga_player *player, unsigned int value);
+
 // Convenience functions
 int piga_player_get_input(piga_player *player, char input_id);
 void piga_player_set_input(piga_player *player, char input_id, int value);

@@ -10,6 +10,12 @@ struct piga_player
     atomic_char name[PIGA_PLAYER_NAME_LENGTH];
     atomic_char role;
     atomic_char status;
+    
+    // Flags
+    atomic_bool keyboard_requested;
+    atomic_bool keyboard_open;
+    
+    // Inputs & Outputs
     piga_player_inputs inputs;
 };
 

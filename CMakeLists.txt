@@ -18,12 +18,14 @@ set(CTEST_OUTPUT_ON_FAILURE 1)
 
 set(ENV{BOOST_TEST_LOG_LEVEL} "all")
 
+find_package(Threads)
+
 foreach(testSrc ${TEST_SRCS})
     get_filename_component(testName ${testSrc} NAME_WE)
 
     add_executable(${testName} ${testSrc})
 
-    target_link_libraries(${testName} piga_server piga_client piga_common ${Boost_LIBRARIES} )
+    target_link_libraries(${testName} piga_server piga_client piga_common ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     
     target_include_directories(${testName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
