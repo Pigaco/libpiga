@@ -1,0 +1,14 @@
+#ifndef PIGA_CONFIG_H_INCLUDED
+#define PIGA_CONFIG_H_INCLUDED
+
+#define PIGA_VERSION_MAJOR @PIGA_VERSION_MAJOR@
+#define PIGA_VERSION_MINOR @PIGA_VERSION_MINOR@
+#define PIGA_VERSION_PATCH @PIGA_VERSION_PATCH@
+#define PIGA_VERSION_TWEAK @PIGA_VERSION_TWEAK@
+
+int piga_get_version_major();
+int piga_get_version_minor();
+int piga_get_version_patch();
+int piga_get_version_tweak();
+
+#endif

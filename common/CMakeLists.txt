@@ -1,8 +1,9 @@
 set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(HDR ${CMAKE_CURRENT_SOURCE_DIR}/../include/piga)
 
-set(HDRS
+set(COMMON_HDRS
     ${HDR}/status.h
+    ${HDR}/config.h
     ${HDR}/event_game_input.h
     ${HDR}/event_text_input.h
     ${HDR}/event_queue.h
@@ -30,9 +31,10 @@ set(HDRS
     ${HDR}/internal/piga_event_text_input_struct.h
     ${HDR}/internal/piga_player_inputs_struct.h
     ${HDR}/internal/piga_player_struct.h
-)
-set(SRCS
+    PARENT_SCOPE)
+set(COMMON_SRCS
     ${SRC}/status.c
+    ${SRC}/config.c
     ${SRC}/event_game_input.c
     ${SRC}/event_text_input.c
     ${SRC}/event_queue.c
@@ -49,12 +51,7 @@ set(SRCS
     ${SRC}/event_player_left.c
     ${SRC}/event_consumer_registered.c
     ${SRC}/event_consumer_unregistered.c
-)
+    PARENT_SCOPE)
 
-add_library(piga_common SHARED ${HDRS} ${SRCS})
-target_include_directories(piga_common PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    $<INSTALL_INTERFACE:include>
-)
 
  

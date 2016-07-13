@@ -1,9 +1,38 @@
 project(Libpiga)
 cmake_minimum_required(VERSION 3.0.1)
 
+include(GenerateExportHeader)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# Library Version
+set(PIGA_VERSION_MAJOR "0" CACHE STRING "Major-Version")
+set(PIGA_VERSION_MINOR "8" CACHE STRING "Minor-Version")
+set(PIGA_VERSION_PATCH "0" CACHE STRING "Patch-Version")
+set(PIGA_VERSION_TWEAK "0" CACHE STRING "Tweak-Version")
+set(PIGA_VERSION_BUILD "0" CACHE STRING "Build")
+set(PIGA_VERSION ${PIGA_VERSION_MAJOR}.${PIGA_VERSION_MINOR}.${PIGA_VERSION_PATCH}.${PIGA_VERSION_TWEAK}:${PIGA_VERSION_BUILD})
+
+# Subdirectories
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/common)
+add_library(piga_common SHARED ${COMMON_HDRS} ${COMMON_SRCS})
+target_include_directories(piga_common PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)
+add_library(piga_server SHARED ${SERVER_HDRS} ${SERVER_SRCS})
+target_include_directories(piga_server PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(piga_server piga_common)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
+add_library(piga_client SHARED ${CLIENT_HDRS} ${CLIENT_SRCS})
+target_include_directories(piga_client PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(piga_client piga_common)
 
 # SWIG
 find_package(SWIG)
@@ -16,6 +45,68 @@ if(${SWIG_FOUND})
     SWIG_LINK_LIBRARIES(piga_client_lua piga_client)
     SWIG_LINK_LIBRARIES(piga_server_lua piga_server)
 endif()
+
+# Config.h
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/piga/config.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/piga/config.h)
+
+# CMake logic to export the target and make it findable by other 
+# projects. 
+generate_export_header(piga_common)
+generate_export_header(piga_server)
+generate_export_header(piga_client)
+
+set_property(TARGET piga_common PROPERTY VESION ${PIGA_VERSION})
+set_property(TARGET piga_common PROPERTY SOVERSION ${PIGA_VERSION_MAJOR})
+set_property(TARGET piga_common PROPERTY
+    INTERFACE_piga_common_MAJOR_VERSION ${PIGA_VERSION_MAJOR})
+set_property(TARGET piga_client PROPERTY VESION ${PIGA_VERSION})
+set_property(TARGET piga_client PROPERTY SOVERSION ${PIGA_VERSION_MAJOR})
+set_property(TARGET piga_client PROPERTY
+    INTERFACE_piga_client_MAJOR_VERSION ${PIGA_VERSION_MAJOR})
+set_property(TARGET piga_server PROPERTY VESION ${PIGA_VERSION})
+set_property(TARGET piga_server PROPERTY SOVERSION ${PIGA_VERSION_MAJOR})
+set_property(TARGET piga_server PROPERTY
+    INTERFACE_piga_server_MAJOR_VERSION ${PIGA_VERSION_MAJOR})
+
+install(TARGETS piga_common piga_server piga_client EXPORT PigaTargets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    INCLUDES DESTINATION include
+    RUNTIME DESTINATION bin)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/piga
+    DESTINATION include/piga)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/PigaConfigVersion.cmake"
+  VERSION ${PIGA_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+configure_file(${CMAKE_MODULE_PATH}/PigaConfig.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/PigaConfig.cmake"
+  COPYONLY
+)
+
+set(ConfigPackageLocation lib/cmake)
+
+install(EXPORT PigaTargets
+  FILE
+    PigaTargets.cmake
+  NAMESPACE
+    Upstream::
+  DESTINATION
+    ${ConfigPackageLocation}
+)
+install(
+  FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/PigaConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/PigaConfig.cmake"
+  DESTINATION
+    ${ConfigPackageLocation}
+)
 
 # Unit Tests
 # Tests are written in C++ to make testing easier.

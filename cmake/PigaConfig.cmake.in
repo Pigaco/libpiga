@@ -1,0 +1,26 @@
+# Defines
+#   - PIGA_COMMON_LIBRARY
+#   - PIGA_CLIENT_LIBRARY
+#   - PIGA_SERVER_LIBRARY
+#   - PIGA_INCLUDE_DIRS
+
+find_library(PIGA_COMMON_LIBRARY piga_common
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+    HINTS piga_common libpiga_common
+    NO_DEFAULT_PATH
+)
+find_library(PIGA_CLIENT_LIBRARY piga_client
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+    HINTS piga_client libpiga_client
+    NO_DEFAULT_PATH
+)
+find_library(PIGA_SERVER_LIBRARY piga_server
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+    HINTS piga_server libpiga_server
+    NO_DEFAULT_PATH
+)
+
+find_path(PIGA_INCLUDE_DIRS piga/Config.h
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+    NO_DEFAULT_PATH
+)
