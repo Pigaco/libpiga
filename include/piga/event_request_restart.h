@@ -1,0 +1,6 @@
+#ifndef PIGA_EVENT_REQUEST_RESTART_H_INCLUDED
+#define PIGA_EVENT_REQUEST_RESTART_H_INCLUDED
+
+typedef struct piga_event_request_restart piga_event_request_restart;
+
+#endif

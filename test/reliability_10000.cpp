@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(HostAndClientCase)
     
     status = piga_host_startup(host);
     if(status != PIGA_STATUS_OK) {
-        BOOST_TEST_MESSAGE(piga_status_what(status));
+        BOOST_TEST_MESSAGE(piga_status_what(&status));
         BOOST_TEST_MESSAGE(piga_errno_what());
     }
     BOOST_REQUIRE_EQUAL(status, PIGA_STATUS_OK);
@@ -30,9 +30,9 @@ BOOST_AUTO_TEST_CASE(HostAndClientCase)
     
     piga_client_consume_config(client, client_config);
     
-    status = piga_client_connect(client);
+    status = piga_client_connect(client, "Test Client", sizeof("Test Client"));
     if(status != PIGA_STATUS_OK) {
-        BOOST_TEST_MESSAGE(piga_status_what(status));
+        BOOST_TEST_MESSAGE(piga_status_what(&status));
         BOOST_TEST_MESSAGE(piga_errno_what());
     }
     BOOST_REQUIRE_EQUAL(status, PIGA_STATUS_OK);

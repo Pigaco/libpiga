@@ -2,9 +2,9 @@
 #include <errno.h>
 #include <string.h>
 
-const char* piga_status_what(piga_status status)
+const char* piga_status_what(piga_status *status)
 {
-    switch(status)
+    switch(*status)
     {
         case PIGA_STATUS_OK:
             return "PIGA_STATUS_OK: Indicates success";
@@ -25,8 +25,18 @@ const char* piga_status_what(piga_status status)
             "was either smaller than 0 or greater than the player count defined in the host config.";
         case PIGA_ERROR_SHMSIZE_INVALID:
             return "PIGA_ERROR_SHMSIZE_INVALID: The shared memory size was invalid.";
+        case PIGA_ERROR_NOT_IN_TYPE_MASK:
+            return "PIGA_ERROR_NOT_IN_TYPE_MASK: The type of the given event was not included in the queue's type mask and is dropped.";
+        case PIGA_ERROR_NO_OUT_QUEUE:
+            return "PIGA_ERROR_NO_OUT_QUEUE: The client doesn't have an output queue to the host. Is the client connected?";
+        case PIGA_ERROR_NO_SPACE_LEFT_IN_MAP:
+            return "PIGA_ERROR_NO_SPACE_LEFT_IN_MAP: The map has no space left for the additional queue! Remove some other queues first.";
     }
     return "Error not found.";
+}
+const char* piga_status_what_copy(piga_status status)
+{
+    return piga_status_what(&status);
 }
 
 const char* piga_errno_what()

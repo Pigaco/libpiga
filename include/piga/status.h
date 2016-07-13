@@ -17,9 +17,13 @@ typedef enum
     PIGA_ERROR_EMPTY_QUEUE = -6,
     PIGA_ERROR_INVALID_PLAYER_ID = -7,
     PIGA_ERROR_SHMSIZE_INVALID = -8,
+    PIGA_ERROR_NOT_IN_TYPE_MASK = -9,
+    PIGA_ERROR_NO_OUT_QUEUE = -10,
+    PIGA_ERROR_NO_SPACE_LEFT_IN_MAP = -11,
 } piga_status;
 
-const char* piga_status_what(piga_status status);
+const char* piga_status_what_copy(piga_status status);
+const char* piga_status_what(piga_status *status);
 
 const char* piga_errno_what();
 

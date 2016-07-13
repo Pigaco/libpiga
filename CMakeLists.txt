@@ -5,6 +5,17 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/common)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
 
+# SWIG
+find_package(SWIG)
+if(${SWIG_FOUND})
+    include(${SWIG_USE_FILE})
+    SWIG_ADD_MODULE(piga_common_lua lua ${CMAKE_CURRENT_SOURCE_DIR}/swig/piga_common.i)
+    SWIG_ADD_MODULE(piga_client_lua lua ${CMAKE_CURRENT_SOURCE_DIR}/swig/piga_client.i)
+    SWIG_ADD_MODULE(piga_server_lua lua ${CMAKE_CURRENT_SOURCE_DIR}/swig/piga_server.i)
+    SWIG_LINK_LIBRARIES(piga_common_lua piga_common)
+    SWIG_LINK_LIBRARIES(piga_client_lua piga_client)
+    SWIG_LINK_LIBRARIES(piga_server_lua piga_server)
+endif()
 
 # Unit Tests
 # Tests are written in C++ to make testing easier.
@@ -26,16 +37,16 @@ foreach(testSrc ${TEST_SRCS})
     add_executable(${testName} ${testSrc})
 
     target_link_libraries(${testName} piga_server piga_client piga_common ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-    
+
     target_include_directories(${testName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-    set_target_properties(${testName} PROPERTIES 
+    set_target_properties(${testName} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_BINARY_DIR}/testBin)
-        
-    target_compile_definitions(${testName} PUBLIC 
+
+    target_compile_definitions(${testName} PUBLIC
         -DBOOST_TEST_DYN_LINK)
 
-    add_test(NAME ${testName} 
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testBin 
+    add_test(NAME ${testName}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testBin
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testBin/${testName} )
 endforeach(testSrc)

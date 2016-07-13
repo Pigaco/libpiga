@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(CreateHostCase)
     
     status = piga_host_startup(host);
     if(status != PIGA_STATUS_OK) {
-        BOOST_TEST_MESSAGE(piga_status_what(status));
+        BOOST_TEST_MESSAGE(piga_status_what(&status));
         BOOST_TEST_MESSAGE(piga_errno_what());
     }
     BOOST_REQUIRE_EQUAL(status, PIGA_STATUS_OK);

@@ -4,10 +4,12 @@ set(HDR ${CMAKE_CURRENT_SOURCE_DIR}/../include/piga)
 set(HDRS
     ${HDR}/host.h
     ${HDR}/host_config.h
+    ${HDR}/clients_map.h
 )
 set(SRCS
     ${SRC}/host.c
     ${SRC}/host_config.c
+    ${SRC}/clients_map.c
 )
 
 add_library(piga_server SHARED ${HDRS} ${SRCS})

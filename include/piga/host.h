@@ -9,8 +9,9 @@ extern "C"
 #include <piga/status.h>
 #include <piga/host_config.h>
 #include <piga/player.h>
-#include <piga/event_text_input_queue.h>
+#include <piga/event_queue.h>
 #include <piga/shared_memory.h>
+#include <piga/clients_map.h>
     
 typedef struct {
     piga_host_config *config;
@@ -33,10 +34,16 @@ typedef struct {
      * -----|------|-------------
      * **Players**
      * Player[n] | piga_player | Players (as much as defined in the config).
-     * **Queues**
-     * Text Event Queue | piga_event_text_input_queue | The queue for text inputs.
      */
     piga_shared_memory shared_memory;
+    
+    // Host-Queue. This queue serves as an out-queue for other processes and as an in-queue for the host.
+    piga_event_queue *host_queue;
+    int host_queue_shm_id;
+    piga_clients_map clients_map;
+    
+    // This event is used as a cache while looping through the host-queue.
+    piga_event *cache_event;
 } piga_host;
 
 piga_host* piga_host_create();
@@ -46,7 +53,9 @@ piga_status piga_host_free(piga_host *host);
 piga_status piga_host_startup(piga_host* host);
 
 piga_player* piga_host_get_player_by_id(piga_host *host, char player_id);
-piga_event_text_input_queue* piga_host_get_event_text_input_queue(piga_host *host);
+piga_event_queue* piga_host_get_event_queue(piga_host *host);
+void piga_host_push_event(piga_host *host, piga_event *ev);
+void piga_host_update(piga_host *host);
 
 void piga_host_set_player_input(piga_host* host, char player_id, char input_id, int value);
 

@@ -6,13 +6,12 @@ extern "C"
 {
 #endif
 
-#include <piga/event_text_input_queue.h>
+#include <piga/event_queue.h>
 #include <piga/player.h>
     
 typedef struct 
 {
     void *start;
-    piga_event_text_input_queue *event_text_input_queue;
     piga_player **players;
 } piga_shared_memory;
 

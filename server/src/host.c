@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <piga/host.h>
-#include <piga/internal/piga_event_text_input_queue_struct.h>
+#include <piga/internal/piga_event_queue_struct.h>
 #include <piga/internal/piga_player_struct.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -16,6 +16,10 @@ piga_host* piga_host_create()
     host->shared_memory_id = 0;
     host->shared_memory.start = NULL;
     host->shared_memory.players = NULL;
+    host->host_queue = 0;
+    host->host_queue_shm_id = 0;
+    piga_clients_map_init(&host->clients_map);
+    host->cache_event = piga_event_create();
     return host;
 }
 piga_status piga_host_consume_config(piga_host *host, piga_host_config* config)
@@ -38,8 +42,17 @@ piga_status piga_host_free(piga_host *host)
     if(host->config->create_shared_memory && host->shared_memory_id)
         shmctl(host->shared_memory_id, IPC_RMID, NULL);
     
+    // Free the host-queue, if it has been created.
+    if(host->host_queue) {
+        piga_event_queue_free_in_shm(host->host_queue, host->host_queue_shm_id);
+        host->host_queue = 0;
+        host->host_queue_shm_id = 0;
+    }
+    
     if(host->config) 
         free(host->config);
+    
+    piga_event_free(host->cache_event);
     
     free(host);
     
@@ -54,7 +67,6 @@ piga_status piga_host_startup(piga_host *host)
     if(host->config->create_shared_memory) {
         int shared_memory_size = 
             host->config->player_count * sizeof(piga_player)
-          + sizeof(piga_event_text_input_queue)
           + 120; // Padding
           
         host->shared_memory_id = shmget(host->config->shared_memory_key, 
@@ -75,10 +87,6 @@ piga_status piga_host_startup(piga_host *host)
             piga_player **players = malloc(size);
             memcpy(host->shared_memory.start, (&players[0]), size);
             free(players);
-            
-            piga_event_text_input_queue *queue = piga_event_text_input_queue_create();
-            memcpy(host->shared_memory.start + size, queue, sizeof(piga_event_text_input_queue));
-            free(queue);
         }
         
         // Setup the memory mappings
@@ -90,9 +98,17 @@ piga_status piga_host_startup(piga_host *host)
             piga_player_set_name(piga_host_get_player_by_id(host, i), 
                 PIGA_PLAYER_DEFAULT_NAME, sizeof(PIGA_PLAYER_DEFAULT_NAME));
         }
-        piga_event_text_input_queue_init((char*) piga_host_get_event_text_input_queue(host));
         
+        piga_status status;
         
+        // Setup the host-queue 
+        host->host_queue = piga_event_queue_create_in_shm(PIGA_EVENT_QUEUE_START_KEY,
+            &host->host_queue_shm_id,
+            &status
+        );
+        
+        if(status != PIGA_STATUS_OK) 
+            return status;
     }
     
     return PIGA_STATUS_OK;
@@ -106,12 +122,31 @@ void piga_host_set_player_input(piga_host* host, char player_id, char input_id, 
     piga_player *player = piga_host_get_player_by_id(host, player_id);
     player->inputs.value[input_id] = value;
 }
-piga_event_text_input_queue* piga_host_get_event_text_input_queue(piga_host* host)
+piga_event_queue* piga_host_get_event_queue(piga_host* host)
 {
-    return host->shared_memory.event_text_input_queue;
+    return host->host_queue;
 }
 void piga_host_players_reset_inputs(piga_host* host)
 {
     for(int i = 0; i < host->config->player_count; ++i)
         piga_player_inputs_reset(&(piga_host_get_player_by_id(host, i)->inputs));
+}
+void piga_host_push_event(piga_host* host, piga_event* ev)
+{
+    piga_clients_map_push_event(&host->clients_map, ev);
+}
+void piga_host_update(piga_host* host)
+{
+    while(piga_event_queue_poll(host->host_queue, host->cache_event) == PIGA_STATUS_OK) {
+        switch(piga_event_get_type(host->cache_event)) {
+            case PIGA_EVENT_CONSUMER_REGISTERED:
+                piga_clients_map_add_from_ev(&host->clients_map, 
+                    piga_event_get_consumer_registered(host->cache_event));
+                break;
+            case PIGA_EVENT_CONSUMER_UNREGISTERED:
+                piga_clients_map_remove_from_ev(&host->clients_map,
+                    piga_event_get_consumer_unregistered(host->cache_event));
+                break;
+        }
+    }
 }
