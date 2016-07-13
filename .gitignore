@@ -1,3 +1,17 @@
 libpiga_neo.kdev4
 .kdev4
 build/
+
+include/piga/config.h
+
+
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
