@@ -7,6 +7,7 @@
 
 struct piga_event_request_restart {
     atomic_char app_name[PIGA_EVENT_APP_INSTALLED_NAME_LENGTH];
+    atomic_char flags;
 };
 
 #endif

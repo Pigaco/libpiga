@@ -15,6 +15,7 @@ set(COMMON_HDRS
     ${HDR}/event.h
     ${HDR}/event_app_installed.h
     ${HDR}/event_request_keyboard.h
+    ${HDR}/event_request_restart.h
     ${HDR}/event_player_joined.h
     ${HDR}/event_player_left.h
     ${HDR}/event_consumer_registered.h

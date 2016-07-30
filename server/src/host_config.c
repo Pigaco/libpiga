@@ -44,3 +44,11 @@ void piga_host_config_set_name(piga_host_config* config, const char* name)
 {
     config->name = name;
 }
+int piga_host_config_get_player_count(piga_host_config *config)
+{
+    return config->player_count;
+}
+void piga_host_config_set_player_count(piga_host_config *config, int player_count)
+{
+    config->player_count = player_count;
+}

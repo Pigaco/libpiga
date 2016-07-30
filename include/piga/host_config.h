@@ -29,6 +29,9 @@ void piga_host_config_set_shared_memory_key(piga_host_config *config, int key);
 const char* piga_host_config_get_name(const piga_host_config* config);
 void piga_host_config_set_name(piga_host_config *config, const char* name);
 
+void piga_host_config_set_player_count(piga_host_config *config, int player_count);
+int piga_host_config_get_player_count(piga_host_config *config);
+
 #ifdef __cplusplus
 }
 #endif

@@ -147,6 +147,22 @@ void piga_host_update(piga_host* host)
                 piga_clients_map_remove_from_ev(&host->clients_map,
                     piga_event_get_consumer_unregistered(host->cache_event));
                 break;
+            case PIGA_EVENT_APP_INSTALLED:
+                break;
+            case PIGA_EVENT_GAME_INPUT:
+                break;
+            case PIGA_EVENT_PLAYER_JOINED:
+                break;
+            case PIGA_EVENT_PLAYER_LEFT:
+                break;
+            case PIGA_EVENT_REQUEST_KEYBOARD:
+                break;
+            case PIGA_EVENT_REQUEST_RESTART:
+                break;
+            case PIGA_EVENT_TEXT_INPUT:
+                break;
+            case PIGA_EVENT_UNKNOWN:
+                break;
+            }
         }
     }
-}
