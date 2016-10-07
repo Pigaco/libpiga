@@ -100,6 +100,10 @@ void piga_event_queue_init(char* memory)
 
     // Initialize the type mask. This mask defines the types of
     // events, this queue receives from the other side.
+    //
+    // The PIGA_EVENT_PLUGIN_MSG is omitted by default. Apps must explicitly 
+    // subscribe to plugin messages to reduce load on the system from apps 
+    // which don't need custom messaging.
     queue->type_mask =
               PIGA_EVENT_APP_INSTALLED
             | PIGA_EVENT_CONSUMER_REGISTERED

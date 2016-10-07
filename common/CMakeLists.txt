@@ -20,6 +20,7 @@ set(COMMON_HDRS
     ${HDR}/event_player_left.h
     ${HDR}/event_consumer_registered.h
     ${HDR}/event_consumer_unregistered.h
+    ${HDR}/event_plugin_msg.h
 
     ${HDR}/internal/piga_event_app_installed_struct.h
     ${HDR}/internal/piga_event_consumer_registered_struct.h
@@ -28,6 +29,7 @@ set(COMMON_HDRS
     ${HDR}/internal/piga_event_queue_struct.h
     ${HDR}/internal/piga_event_request_keyboard_struct.h
     ${HDR}/internal/piga_event_request_restart_struct.h
+    ${HDR}/internal/piga_event_plugin_msg_struct.h
     ${HDR}/internal/piga_event_struct.h
     ${HDR}/internal/piga_event_text_input_struct.h
     ${HDR}/internal/piga_player_inputs_struct.h
@@ -52,6 +54,7 @@ set(COMMON_SRCS
     ${SRC}/event_player_left.c
     ${SRC}/event_consumer_registered.c
     ${SRC}/event_consumer_unregistered.c
+    ${SRC}/event_plugin_msg.c
     PARENT_SCOPE)
 
 

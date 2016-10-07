@@ -161,6 +161,8 @@ void piga_host_update(piga_host* host)
                 break;
             case PIGA_EVENT_TEXT_INPUT:
                 break;
+            case PIGA_EVENT_PLUGIN_BUS:
+                break;
             case PIGA_EVENT_UNKNOWN:
                 break;
             }
