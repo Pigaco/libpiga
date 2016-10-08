@@ -23,7 +23,7 @@ typedef enum {
     PIGA_EVENT_APP_INSTALLED            = 1 << 7,
     PIGA_EVENT_CONSUMER_REGISTERED      = 1 << 8,
     PIGA_EVENT_CONSUMER_UNREGISTERED    = 1 << 9,
-    PIGA_EVENT_PLUGIN_BUS               = 1 << 10,
+    PIGA_EVENT_PLUGIN_MSG               = 1 << 10,
 } piga_event_type;
 
 piga_event* piga_event_create();
