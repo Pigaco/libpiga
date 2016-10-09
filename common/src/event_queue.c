@@ -104,17 +104,7 @@ void piga_event_queue_init(char* memory)
     // The PIGA_EVENT_PLUGIN_MSG is omitted by default. Apps must explicitly 
     // subscribe to plugin messages to reduce load on the system from apps 
     // which don't need custom messaging.
-    queue->type_mask =
-              PIGA_EVENT_APP_INSTALLED
-            | PIGA_EVENT_CONSUMER_REGISTERED
-            | PIGA_EVENT_CONSUMER_UNREGISTERED
-            | PIGA_EVENT_PLAYER_JOINED
-            | PIGA_EVENT_PLAYER_LEFT
-            | PIGA_EVENT_REQUEST_KEYBOARD
-            | PIGA_EVENT_REQUEST_RESTART
-            | PIGA_EVENT_TEXT_INPUT
-            | PIGA_EVENT_GAME_INPUT
-            | PIGA_EVENT_UNKNOWN;
+    queue->type_mask = PIGA_EVENT_QUEUE_DEFAULT_TYPE_MASK;
 }
 void piga_event_queue_free(piga_event_queue* queue)
 {
@@ -168,4 +158,12 @@ int piga_event_queue_is_empty(piga_event_queue* queue)
 int piga_event_queue_is_in_type_mask(piga_event_queue *queue, piga_event_type type)
 {
     return queue->type_mask & type;
+}
+void piga_event_queue_set_type_mask(piga_event_queue *queue, int type_mask)
+{
+    queue->type_mask = type_mask;
+}
+int piga_event_queue_get_type_mask(piga_event_queue* queue)
+{
+    return queue->type_mask;
 }

@@ -99,6 +99,8 @@ piga_status piga_client_connect(piga_client* client, const char *name, int name_
         name, name_length
     );
     
+    piga_event_queue_set_type_mask(client->in_queue, client->config->event_type_mask);
+    
     if(status != PIGA_STATUS_OK)
         return status;
     

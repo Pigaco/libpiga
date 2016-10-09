@@ -14,8 +14,20 @@ extern "C"
 // Additionally, this is the ID of the host-queue.
 #define PIGA_EVENT_QUEUE_START_KEY 7010
     
+    
 #include <piga/status.h>
 #include <piga/event.h>
+    
+#define PIGA_EVENT_QUEUE_DEFAULT_TYPE_MASK PIGA_EVENT_APP_INSTALLED \
+            | PIGA_EVENT_CONSUMER_REGISTERED \
+            | PIGA_EVENT_CONSUMER_UNREGISTERED \
+            | PIGA_EVENT_PLAYER_JOINED \
+            | PIGA_EVENT_PLAYER_LEFT \
+            | PIGA_EVENT_REQUEST_KEYBOARD \
+            | PIGA_EVENT_REQUEST_RESTART \
+            | PIGA_EVENT_TEXT_INPUT  \
+            | PIGA_EVENT_GAME_INPUT \
+            | PIGA_EVENT_UNKNOWN 
 
 typedef struct piga_event_queue piga_event_queue;
     
@@ -57,6 +69,8 @@ int piga_event_queue_is_empty(piga_event_queue *queue);
 
 int piga_event_queue_is_in_type_mask(piga_event_queue *queue, piga_event_type type);
 
+void piga_event_queue_set_type_mask(piga_event_queue *queue, int type_mask);
+int piga_event_queue_get_type_mask(piga_event_queue *queue);
 
 #ifdef __cplusplus
 }

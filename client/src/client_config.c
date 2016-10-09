@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <piga/client_config.h>
 #include <piga/host_config.h>
+#include <piga/event_queue.h>
 
 piga_client_config* piga_client_config_default()
 {
@@ -10,6 +11,7 @@ piga_client_config* piga_client_config_default()
     // with the host!
     config->player_count = PIGA_DEFAULT_PLAYER_COUNT;
     config->shared_memory_key = PIGA_DEFAULT_SHARED_MEMORY_KEY;
+    config->event_type_mask = PIGA_EVENT_QUEUE_DEFAULT_TYPE_MASK;
     
     return config;
 }
@@ -32,4 +34,12 @@ char piga_client_config_get_player_count(piga_client_config* config)
 void piga_client_config_set_player_count(piga_client_config* config, char player_count)
 {
     config->player_count = player_count;
+}
+int piga_client_config_get_event_type_mask(piga_client_config *config)
+{
+    return config->event_type_mask;
+}
+void piga_client_config_set_event_type_mask(piga_client_config* config, int type_mask)
+{
+    config->event_type_mask = type_mask;
 }
