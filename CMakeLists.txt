@@ -140,6 +140,19 @@ set(ENV{BOOST_TEST_LOG_LEVEL} "all")
 
 find_package(Threads)
 
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A library which implements the pigaco IPC system for the piga console.")
+set(CPACK_PACKAGE_VENDOR "Pigaco")
+set(CPACK_PACKAGE_VERSION_MAJOR ${PIGA_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PIGA_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PIGA_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_TWEAK ${PIGA_VERSION_TWEAK})
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://pigaco.net/pages/libpiga.html")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS)
+set(CPACK_PACKAGE_NAME "piga-libpiga")
+set(CPACK_GENERATOR "DEB")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Max Heisinger <mail@maximaximal.com>")
+include(CPack)
+
 foreach(testSrc ${TEST_SRCS})
     get_filename_component(testName ${testSrc} NAME_WE)
 
