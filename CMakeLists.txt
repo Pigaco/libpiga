@@ -180,5 +180,5 @@ foreach(testSrc ${TEST_SRCS})
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testBin
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testBin/${testName} )
 
-    target_compile_features(${testName} PRIVATE cxx_range_for)
+    set_property(TARGET ${testName} PROPERTY CXX_STANDARD 11)
 endforeach(testSrc)
