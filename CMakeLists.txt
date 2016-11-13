@@ -34,6 +34,11 @@ target_include_directories(piga_client PUBLIC
 )
 target_link_libraries(piga_client piga_common)
 
+# C-Standard 
+set_property(TARGET piga_common PROPERTY C_STANDARD 11)
+set_property(TARGET piga_client PROPERTY C_STANDARD 11)
+set_property(TARGET piga_server PROPERTY C_STANDARD 11)
+
 # SWIG
 find_package(SWIG)
 
