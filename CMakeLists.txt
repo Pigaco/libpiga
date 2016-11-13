@@ -35,9 +35,9 @@ target_include_directories(piga_client PUBLIC
 target_link_libraries(piga_client piga_common)
 
 # C-Standard 
-set_property(TARGET piga_common PROPERTY C_STANDARD 11)
-set_property(TARGET piga_client PROPERTY C_STANDARD 11)
-set_property(TARGET piga_server PROPERTY C_STANDARD 11)
+set_property(TARGET piga_common PROPERTY COMPILE_FLAGS "-std=gnu99")
+set_property(TARGET piga_client PROPERTY COMPILE_FLAGS "-std=gnu99")
+set_property(TARGET piga_server PROPERTY COMPILE_FLAGS "-std=gnu99")
 
 # SWIG
 find_package(SWIG)
@@ -130,14 +130,16 @@ if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/piga_client_lua.so)
 	file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/piga_common_lua.so ${CMAKE_CURRENT_BINARY_DIR}/piga_common.so)
 endif()
 
-install(
-    FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/piga_client.so
-        ${CMAKE_CURRENT_BINARY_DIR}/piga_server.so
-        ${CMAKE_CURRENT_BINARY_DIR}/piga_common.so
-    DESTINATION
-        lib/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}/
-)
+if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/piga_client.so)
+    install(
+        FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/piga_client.so
+            ${CMAKE_CURRENT_BINARY_DIR}/piga_server.so
+            ${CMAKE_CURRENT_BINARY_DIR}/piga_common.so
+        DESTINATION
+            lib/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}/
+    )
+endif()
 
 # Unit Tests
 # Tests are written in C++ to make testing easier.
@@ -185,5 +187,5 @@ foreach(testSrc ${TEST_SRCS})
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testBin
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testBin/${testName} )
 
-    set_property(TARGET ${testName} PROPERTY CXX_STANDARD 11)
+    set_property(TARGET ${testName} PROPERTY COMPILE_FLAGS "-std=c++11")
 endforeach(testSrc)
