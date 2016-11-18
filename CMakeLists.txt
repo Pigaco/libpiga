@@ -85,14 +85,16 @@ set_property(TARGET piga_server PROPERTY SOVERSION ${PIGA_VERSION_MAJOR})
 set_property(TARGET piga_server PROPERTY
     INTERFACE_piga_server_MAJOR_VERSION ${PIGA_VERSION_MAJOR})
 
+include(GNUInstallDirs)
+
 install(TARGETS piga_common piga_server piga_client EXPORT PigaTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    INCLUDES DESTINATION include
-    RUNTIME DESTINATION bin)
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/piga
-    DESTINATION include)
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -137,7 +139,7 @@ if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/piga_client.so)
             ${CMAKE_CURRENT_BINARY_DIR}/piga_server.so
             ${CMAKE_CURRENT_BINARY_DIR}/piga_common.so
         DESTINATION
-            lib/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}/
+            ${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}/
     )
 endif()
 
