@@ -1,5 +1,6 @@
 #define BOOST_TEST_MODULE Reliability10000
 #include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 #include <thread>
 #include <functional>

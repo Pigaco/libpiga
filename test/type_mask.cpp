@@ -1,5 +1,6 @@
 #define BOOST_TEST_MODULE HostAndClient
 #include <boost/test/unit_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 #include <piga/host.h>
 #include <piga/client.h>
